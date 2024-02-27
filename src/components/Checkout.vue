@@ -8,6 +8,9 @@
         :key="activity.id"
       >
         <i v-bind:class="activity.icon"></i>
+        <p>
+          <font-awesome-icon :icon="activity.icon" />
+        </p>
         <p>Subject: {{ activity.subject }}</p>
         <p>Location: {{ activity.location }}</p>
         <p>Price: £ {{ activity.price }}</p>
@@ -50,8 +53,17 @@
 </template>
 
 <script>
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
 export default {
-  props: ["cart"],
+  name: "Checkout",
+  props: {
+    cart: Array,
+  },
+  components: {
+    FontAwesomeIcon,
+  },
   data() {
     return {
       name: "",
@@ -61,11 +73,17 @@ export default {
   computed: {
     isNameandNumberValid() {
       const namePattern = /^[a-zA-Z ]+$/;
-      const phoneNumberTest = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
-      return namePattern.test(this.name) && phoneNumberTest.test(this.phoneNumber);
+      const phoneNumberTest =
+        /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+      return (
+        namePattern.test(this.name) && phoneNumberTest.test(this.phoneNumber)
+      );
     },
     totalInCart() {
-      return this.cart.reduce((total, activity) => total + activity.price * activity.availableSpace, 0);
+      return this.cart.reduce(
+        (total, activity) => total + activity.price * activity.availableSpace,
+        0
+      );
     },
   },
   methods: {
