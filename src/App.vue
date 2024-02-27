@@ -65,8 +65,6 @@ header {
 }
 </style>
 <script setup>
-import HelloWorld from "./components/HelloWorld.vue";
-import TheWelcome from "./components/TheWelcome.vue";
 import LessonItem from "./components/LessonItem.vue";
 import Checkout from "./components/Checkout.vue";
 </script>
