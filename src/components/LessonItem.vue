@@ -71,6 +71,7 @@
           <p>Price: £ {{ activity.price }}</p>
           <p>Spaces: {{ activity.spaces }}</p>
           <button
+            v-if="canAddToCart(product)"
             v-bind:disabled="activity.spaces <= 0"
             v-on:click="addToCart(activity, true)"
           >
@@ -85,7 +86,7 @@
 <script>
 export default {
   name: "LessonItem",
-  props: ["afterSchoolActivity", "showCart"],
+  props: ["afterSchoolActivity", "showCart", "cart"],
   data() {
     return {
       showSortOrder: false,
@@ -96,6 +97,9 @@ export default {
     };
   },
   methods: {
+    canAddToCart(product) {
+      return product.availableInventory > this.cartCount(product.id);
+    },
     addToCart(lesson, type) {
       if (lesson.availableSpace > 0) {
         lesson.availableSpace++;

@@ -8,6 +8,47 @@
       </div>
     </header> -->
 
+    <header>
+      <h2>AfterLessons</h2>
+
+      <!-- This is the search bar -->
+      <div>
+        <div class="search" v-show="!showCart" st>
+          <input
+            type="text"
+            v-model="searchedItem"
+            v-on:input="searchLessons"
+          />
+          <a v-bind:href="serverURL" target="_blank">link</a>
+          <button @click="deleteAllCaches" class="test-elem">
+            <font-awesome-icon icon="fas fa-trash" />
+            Delete All Caches
+          </button>
+          <button @click="reloadPage" class="test-elem">
+            <font-awesome-icon icon="fas fa-sync" />
+            Reload Page
+          </button>
+          <button @click="unregisterAllServiceWorkers" class="test-elem">
+            <span class="fab fa-uniregistry"></span>
+            Unregister All ServiceWorkers
+          </button>
+        </div>
+
+        <button style="border-radius: 30px; border: 1px solid gray">
+          <div v-on:click="showCart = !showCart" class="cartIcon">
+            <i
+              class="fa-solid fa-cart-shopping"
+              style="color: #9b9d9f; margin-right: 10px"
+            ></i>
+            <div>
+              <p>{{ cart.length }}</p>
+            </div>
+            Go to Cart
+          </div>
+        </button>
+      </div>
+    </header>
+
     <main>
       <LessonItem
         :afterSchoolActivity="[
@@ -72,6 +113,9 @@ import Checkout from "./components/Checkout.vue";
 export default {
   data() {
     return {
+      testConsole: true,
+      showTestConsole: true,
+
       showCart: false,
       showSortOrder: false,
       searchedItem: "",
@@ -83,6 +127,41 @@ export default {
       serverURL:
         "https://vueproject-env.eba-2ewpm3t7.eu-west-2.elasticbeanstalk.com/collections/lessons",
     };
+  },
+  created: function () {
+    let webstore = this;
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+    this.getLessons();
+    try {
+      fetch(this.serverURL).then(function (response) {
+        response.json().then(function (json) {
+          webstore.afterSchoolActivity = json;
+        });
+      });
+    } catch (ex) {
+      console.log("errror");
+    }
+  },
+  methods: {
+    reloadPage() {
+      window.location.reload();
+    },
+    unregisterAllServiceWorkers() {
+      navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+      console.log("ServiceWorkers Unregistered");
+    },
+    deleteAllCaches() {
+      caches.keys().then(function (names) {
+        for (let name of names) caches.delete(name);
+      });
+      console.log("All Caches Deleted");
+    },
   },
 };
 </script>
