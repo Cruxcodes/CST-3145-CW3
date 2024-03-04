@@ -61,7 +61,7 @@
     </div>
     <div class="lessons">
       <div class="activities">
-        <div v-for="activity in afterSchoolActivity" :key="activity.id">
+        <div v-for="activity in afterSchoolActivity" :key="activity._id">
           <i v-bind:class="activity.icon"></i>
           <p>
             <font-awesome-icon :icon="activity.icon" />
@@ -71,7 +71,7 @@
           <p>Price: £ {{ activity.price }}</p>
           <p>Spaces: {{ activity.spaces }}</p>
           <button
-            v-if="canAddToCart(product)"
+            v-if="canAddToCart(activity)"
             v-bind:disabled="activity.spaces <= 0"
             v-on:click="addToCart(activity, true)"
           >
@@ -98,17 +98,21 @@ export default {
   },
   methods: {
     canAddToCart(product) {
-      return product.availableInventory > this.cartCount(product.id);
+      return product.availableSpace > this.cartCount(product.id);
     },
-    addToCart(lesson, type) {
-      if (lesson.availableSpace > 0) {
-        lesson.availableSpace++;
-      } else {
-        lesson.availableSpace++;
-        this.cart.push(lesson);
+    cartCount(id) {
+      let count = 0;
+      for (let i = 0; i < this.cart.length; i++) {
+        if (this.cart[i] === id) {
+          count++;
+        }
       }
-      lesson.spaces--;
+      return count;
     },
+    addItemToCart: function (product) {
+      this.$emit("add-item-to-cart", product);
+    },
+
     orderLesson() {
       this.initialRender = false;
       this.afterSchoolActivity.reverse();

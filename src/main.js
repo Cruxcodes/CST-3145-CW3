@@ -1,15 +1,22 @@
 import Vue from "vue";
 import App from "./App.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPhone, faTable,faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPhone,
+  faTable,
+  faPencilAlt,
+  faTrash,
+  faSync,
+} from "@fortawesome/free-solid-svg-icons";
 // import { createApp } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-
 
 import "./assets/main.css";
 library.add(faPhone);
 library.add(faTable);
 library.add(faPencilAlt);
+library.add(faTrash);
+library.add(faSync);
 // createApp(App).component("font-awesome-icon", FontAwesomeIcon).mount("#app");
 
 // new Vue({

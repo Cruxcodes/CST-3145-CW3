@@ -51,27 +51,9 @@
 
     <main>
       <LessonItem
-        :afterSchoolActivity="[
-          {
-            id: 1,
-            icon: 'fas fa-table',
-            subject: 'Maths',
-            location: 'Manchester',
-            price: 500,
-            spaces: 5,
-            availableSpace: 5,
-          },
-          {
-            id: 2,
-            icon: 'fas fa-pencil-alt',
-            subject: 'English',
-            location: 'Brentford',
-            price: 1000,
-            spaces: 5,
-            availableSpace: 2,
-          },
-        ]"
+        :afterSchoolActivity="afterSchoolActivity"
         :showCart="[true]"
+        :cart="cart"
       />
     </main>
   </div>
@@ -115,7 +97,6 @@ export default {
     return {
       testConsole: true,
       showTestConsole: true,
-
       showCart: false,
       showSortOrder: false,
       searchedItem: "",
@@ -130,10 +111,10 @@ export default {
   },
   created: function () {
     let webstore = this;
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("service-worker.js");
-    }
-    this.getLessons();
+    // if ("serviceWorker" in navigator) {
+    //   navigator.serviceWorker.register("service-worker.js");
+    // }
+    // this.getLessons();
     try {
       fetch(this.serverURL).then(function (response) {
         response.json().then(function (json) {
@@ -145,6 +126,15 @@ export default {
     }
   },
   methods: {
+    addToCart(lesson, type) {
+      if (lesson.availableSpace > 0) {
+        lesson.availableSpace++;
+      } else {
+        lesson.availableSpace++;
+        this.cart.push(lesson);
+      }
+      lesson.spaces--;
+    },
     reloadPage() {
       window.location.reload();
     },
