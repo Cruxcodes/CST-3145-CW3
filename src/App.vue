@@ -10,10 +10,9 @@
 
     <header>
       <h2>AfterLessons</h2>
-
       <!-- This is the search bar -->
-      <div>
-        <div class="search" v-show="!showCart" st>
+      <div class="headerFlex">
+        <div class="search" v-show="!showCart">
           <input
             type="text"
             v-model="searchedItem"
@@ -47,52 +46,33 @@
             <div>
               <p>{{ cart.length }}</p>
             </div>
-            Go to Cart
+            {{ currentView == LessonItem ? "Go to Cart" : "Go to Lesson" }}
           </div>
         </button>
       </div>
     </header>
 
     <main>
-      <component :is="currentView"></component>
-
-      <LessonItem
+      <component
+        :is="currentView"
         :afterSchoolActivity="afterSchoolActivity"
         :showCart="[true]"
         @add-item-to-cart="addToCart"
         :cart="cart"
-      />
+        @remove-item-from-cart="removeFromCart"
+      ></component>
+
+      <!-- <LessonItem
+        :afterSchoolActivity="afterSchoolActivity"
+        :showCart="[true]"
+        @add-item-to-cart="addToCart"
+        :cart="cart"
+      /> -->
     </main>
   </div>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
+<style>
+@import "./assets/index.css";
 </style>
 <script setup>
 import LessonItem from "./components/LessonItem.vue";
@@ -138,19 +118,9 @@ export default {
     }
   },
   methods: {
-    addToCart(lesson, type) {
-      if (lesson.availableSpace > 0) {
-        lesson.availableSpace++;
-      } else {
-        lesson.availableSpace++;
-        this.cart.push(lesson);
-      }
-      lesson.spaces--;
-    },
     showCheckout() {
-      if (this.currentView === CheckoutComponent)
-        this.currentView = ProductListComponent;
-      else this.currentView = CheckoutComponent;
+      if (this.currentView === Checkout) this.currentView = LessonItem;
+      else this.currentView = Checkout;
     },
     async searchLessons() {
       try {
@@ -174,7 +144,7 @@ export default {
         console.error(error);
       }
     },
-    addToCart(lesson, type) {
+    addToCart(lesson) {
       if (lesson.availableSpace > 0) {
         lesson.availableSpace++;
       } else {
@@ -182,6 +152,15 @@ export default {
         this.cart.push(lesson);
       }
       lesson.spaces--;
+    },
+    removeFromCart(lesson) {
+      this.afterSchoolActivity.map((element) => {
+        if (lesson.id == element.id) {
+          lesson.spaces++;
+          lesson.availableSpace--;
+        }
+      });
+      this.cart = this.cart.filter((element) => element.availableSpace != 0);
     },
     reloadPage() {
       window.location.reload();

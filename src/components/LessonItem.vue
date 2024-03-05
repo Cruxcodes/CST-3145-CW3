@@ -62,8 +62,8 @@
     <div class="lessons">
       <div class="activities">
         <div v-for="activity in afterSchoolActivity" :key="activity._id">
-          <i v-bind:class="activity.icon"></i>
-          <p>
+          <!-- <i v-bind:class="activity.icon"></i> -->
+          <p class="cartIcon">
             <font-awesome-icon :icon="activity.icon" />
           </p>
           <p>Subject: {{ activity.subject }}</p>
@@ -72,7 +72,7 @@
           <p>Spaces: {{ activity.spaces }}</p>
           <button
             v-bind:disabled="activity.spaces <= 0"
-            v-on:click="addToCart(activity, true)"
+            v-on:click="addItemToCart(activity)"
           >
             Add to Cart
           </button>

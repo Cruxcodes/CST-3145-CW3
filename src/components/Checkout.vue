@@ -14,9 +14,10 @@
         <p>Subject: {{ activity.subject }}</p>
         <p>Location: {{ activity.location }}</p>
         <p>Price: £ {{ activity.price }}</p>
-        <p>Price: £ {{ activity.price }}</p>
         <p>Booked Slots: {{ activity.availableSpace }}</p>
-        <button v-on:click="removeFromCart(activity)">Remove from Cart</button>
+        <button v-on:click="removeItemFromCart(activity)">
+          Remove from Cart
+        </button>
       </div>
     </div>
     <div class="totalincart">
@@ -87,15 +88,10 @@ export default {
     },
   },
   methods: {
-    removeFromCart(lesson) {
-      this.afterSchoolActivity.map((element) => {
-        if (lesson.id == element.id) {
-          lesson.spaces++;
-          lesson.availableSpace--;
-        }
-      });
-      this.cart = this.cart.filter((element) => element.availableSpace != 0);
+    removeItemFromCart: function (product) {
+      this.$emit("remove-item-from-cart", product);
     },
+
     async pushOrder() {
       try {
         const response = await fetch(
