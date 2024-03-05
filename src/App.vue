@@ -107,6 +107,9 @@ export default {
     //   navigator.serviceWorker.register("service-worker.js");
     // }
     // this.getLessons();
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
     try {
       fetch(this.serverURL).then(function (response) {
         response.json().then(function (json) {
