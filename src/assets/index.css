@@ -198,6 +198,13 @@ header {
   gap: 30px;
 }
 
+@media screen and (max-width: 500px) {
+  .checkout form div {
+    flex-direction: column;
+    justify-self: center;
+  }
+}
+
 .checkout form input {
   padding: 5px 10px;
   outline: none;
