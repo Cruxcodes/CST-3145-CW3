@@ -35,7 +35,11 @@
         </div>
 
         <button style="border-radius: 30px; border: 1px solid gray">
-          <div v-on:click="showCart = !showCart" class="cartIcon">
+          <div
+            v-on:click="showCart = !showCart"
+            @click="showCheckout"
+            class="cartIcon"
+          >
             <i
               class="fa-solid fa-cart-shopping"
               style="color: #9b9d9f; margin-right: 10px"
@@ -50,9 +54,12 @@
     </header>
 
     <main>
+      <component :is="currentView"></component>
+
       <LessonItem
         :afterSchoolActivity="afterSchoolActivity"
         :showCart="[true]"
+        @add-item-to-cart="addToCart"
         :cart="cart"
       />
     </main>
@@ -95,6 +102,7 @@ import Checkout from "./components/Checkout.vue";
 export default {
   data() {
     return {
+      currentView: LessonItem,
       testConsole: true,
       showTestConsole: true,
       showCart: false,
@@ -108,6 +116,10 @@ export default {
       serverURL:
         "https://vueproject-env.eba-2ewpm3t7.eu-west-2.elasticbeanstalk.com/collections/lessons",
     };
+  },
+  components: {
+    LessonItem,
+    Checkout,
   },
   created: function () {
     let webstore = this;
@@ -126,6 +138,42 @@ export default {
     }
   },
   methods: {
+    addToCart(lesson, type) {
+      if (lesson.availableSpace > 0) {
+        lesson.availableSpace++;
+      } else {
+        lesson.availableSpace++;
+        this.cart.push(lesson);
+      }
+      lesson.spaces--;
+    },
+    showCheckout() {
+      if (this.currentView === CheckoutComponent)
+        this.currentView = ProductListComponent;
+      else this.currentView = CheckoutComponent;
+    },
+    async searchLessons() {
+      try {
+        const response = await fetch(
+          `https://vueproject-env.eba-2ewpm3t7.eu-west-2.elasticbeanstalk.com/search/collections/lessons?q=${this.searchedItem}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const responseData = await response.json();
+        this.afterSchoolActivity = responseData;
+        return responseData; // Save the data in a component variable
+      } catch (error) {
+        // Handle errors
+        console.error(error);
+      }
+    },
     addToCart(lesson, type) {
       if (lesson.availableSpace > 0) {
         lesson.availableSpace++;

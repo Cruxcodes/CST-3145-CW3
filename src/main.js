@@ -7,6 +7,7 @@ import {
   faPencilAlt,
   faTrash,
   faSync,
+  faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
 // import { createApp } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -16,6 +17,7 @@ library.add(faPhone);
 library.add(faTable);
 library.add(faPencilAlt);
 library.add(faTrash);
+library.add(faCartShopping);
 library.add(faSync);
 // createApp(App).component("font-awesome-icon", FontAwesomeIcon).mount("#app");
 

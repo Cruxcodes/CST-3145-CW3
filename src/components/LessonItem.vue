@@ -71,7 +71,6 @@
           <p>Price: £ {{ activity.price }}</p>
           <p>Spaces: {{ activity.spaces }}</p>
           <button
-            v-if="canAddToCart(activity)"
             v-bind:disabled="activity.spaces <= 0"
             v-on:click="addToCart(activity, true)"
           >
