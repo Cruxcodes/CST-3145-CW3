@@ -1,8 +1,8 @@
 var cacheName = "afterschoolStore-v1";
 var cacheFiles = [
   "./index.html",
-  "assets/store-32.png",
-  "assets/store-512.png",
+  "./src/assets/store-32.png",
+  "./src/assets/store-512.png",
 ];
 // self.addEventListener("install", function (e) {
 //   console.log("[Service Worker] Install");

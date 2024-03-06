@@ -1,13 +1,5 @@
 <template>
   <div id="app">
-    <!-- <header>
-      <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-      <div class="wrapper">
-        <HelloWorld msg="You did it!" />
-      </div>
-    </header> -->
-
     <header>
       <h2>AfterLessons</h2>
       <!-- This is the search bar -->
@@ -19,18 +11,20 @@
             v-on:input="searchLessons"
           />
           <a v-bind:href="serverURL" target="_blank">link</a>
-          <button @click="deleteAllCaches" class="test-elem">
-            <font-awesome-icon icon="fas fa-trash" />
-            Delete All Caches
-          </button>
-          <button @click="reloadPage" class="test-elem">
-            <font-awesome-icon icon="fas fa-sync" />
-            Reload Page
-          </button>
-          <button @click="unregisterAllServiceWorkers" class="test-elem">
-            <span class="fab fa-uniregistry"></span>
-            Unregister All ServiceWorkers
-          </button>
+          <div v-if="testConsole && showTestConsole">
+            <button @click="deleteAllCaches" class="test-elem">
+              <font-awesome-icon icon="fas fa-trash" />
+              Delete All Caches
+            </button>
+            <button @click="reloadPage" class="test-elem">
+              <font-awesome-icon icon="fas fa-sync" />
+              Reload Page
+            </button>
+            <button @click="unregisterAllServiceWorkers" class="test-elem">
+              <span class="fab fa-uniregistry"></span>
+              Unregister All ServiceWorkers
+            </button>
+          </div>
         </div>
 
         <button style="border-radius: 30px; border: 1px solid gray">
@@ -107,9 +101,19 @@ export default {
     //   navigator.serviceWorker.register("service-worker.js");
     // }
     // this.getLessons();
+    // if ("serviceWorker" in navigator) {
+    //   navigator.serviceWorker.register("../service-worker.js");
+    // }
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("../service-worker.js");
-    }
+    navigator.serviceWorker.register("../service-worker.js")
+        .then(function(registration) {
+            console.log("Service Worker registered with scope:", registration.scope);
+        })
+        .catch(function(error) {
+            console.error("Service Worker registration failed:", error);
+        });
+}
+
     try {
       fetch(this.serverURL).then(function (response) {
         response.json().then(function (json) {
