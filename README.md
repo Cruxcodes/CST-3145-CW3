@@ -27,3 +27,8 @@ npm run dev
 ```sh
 npm run build
 ```
+
+
+### link to repository: [https://github.com/Cruxcodes/CST-3145-CW3](https://github.com/Cruxcodes/CST-3145-CW3)
+
+### link to hosted project : [https://cruxcodes.github.io/CST-3145-CW3/](https://cruxcodes.github.io/CST-3145-CW3/)
