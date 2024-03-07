@@ -15,6 +15,7 @@
         }
     ],
     "start_url": "index.html",
+    "id": "index.html",
     "display": "fullscreen",
     "background_color": "#260bca"
 }
