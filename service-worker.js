@@ -28,7 +28,7 @@ self.addEventListener("fetch", (event) => {
   }
 
   event.respondWith(
-    caches.match(event.request).then((response) => {
+    caches.match(event.request).then((cachedFile) => {
       // Return cached file if present
       if (cachedFile) {
         console.log(
