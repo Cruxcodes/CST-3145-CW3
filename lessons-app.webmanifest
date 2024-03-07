@@ -2,14 +2,15 @@
     "name": "My After School Activity App",
     "short_name": "Afterschool",
     "description": "My online extra-activity store",
+    "id":"/index.html",
     "icons": [
         {
-            "src": "/assets/store-32.png",
+            "src": "/store-32.png",
             "sizes": "32x32",
             "type": "image/png"
         },
         {
-            "src": "/assets/store-512.png",
+            "src": "/store-512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
