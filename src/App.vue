@@ -10,8 +10,11 @@
             v-model="searchedItem"
             v-on:input="searchLessons"
           />
-          <a v-bind:href="serverURL" target="_blank">link</a>
+          <button @click="showConsole">Show console</button>
+
           <div v-if="testConsole && showTestConsole">
+            <a v-bind:href="serverURL" target="_blank">link</a>
+            <a v-bind:href="orderUrl" target="_blank">orders</a>
             <button @click="deleteAllCaches" class="test-elem">
               <font-awesome-icon icon="fas fa-trash" />
               Delete All Caches
@@ -54,6 +57,7 @@
         @add-item-to-cart="addToCart"
         :cart="cart"
         @remove-item-from-cart="removeFromCart"
+        :serverUrl="orderUrl"
       ></component>
 
       <!-- <LessonItem
@@ -89,6 +93,8 @@ export default {
       cart: [],
       serverURL:
         "https://vueproject-env.eba-2ewpm3t7.eu-west-2.elasticbeanstalk.com/collections/lessons",
+      orderUrl:
+        "https://vueproject-env.eba-2ewpm3t7.eu-west-2.elasticbeanstalk.com/collections/orders",
     };
   },
   components: {
@@ -101,9 +107,9 @@ export default {
     //   navigator.serviceWorker.register("service-worker.js");
     // }
     // this.getLessons();
-    // if ("serviceWorker" in navigator) {
-    //   navigator.serviceWorker.register("../service-worker.js");
-    // }
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
     // navigator.serviceWorker
     //   .register("service-worker.js")
     //   .then(function (registration) {
@@ -132,11 +138,19 @@ export default {
           webstore.afterSchoolActivity = json;
         });
       });
+      fetch(this.orderUrl).then(function (response) {
+        response.json().then(function (json) {
+          // webstore.afterSchoolActivity = json;
+        });
+      });
     } catch (ex) {
       console.log("errror");
     }
   },
   methods: {
+    showConsole() {
+      this.showTestConsole = !this.showTestConsole;
+    },
     showCheckout() {
       if (this.currentView === Checkout) this.currentView = LessonItem;
       else this.currentView = Checkout;

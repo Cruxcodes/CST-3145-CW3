@@ -61,6 +61,7 @@ export default {
   name: "Checkout",
   props: {
     cart: Array,
+    serverUrl: String,
   },
   components: {
     FontAwesomeIcon,
@@ -91,35 +92,32 @@ export default {
     removeItemFromCart: function (product) {
       this.$emit("remove-item-from-cart", product);
     },
-
+    addItemToOrder: function (product) {},
     async pushOrder() {
       try {
-        const response = await fetch(
-          `https://vueproject-env.eba-2ewpm3t7.eu-west-2.elasticbeanstalk.com/collections/orders`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              // Your data to be updated goes here
-              name: this.name.toString(),
-              phoneNumber: this.phoneNumber,
-              lessons: this.cart.map((item) => {
-                return {
-                  lesson_id: item._id,
-                  spaceTaken: item.availableSpace,
-                };
-              }),
+        const response = await fetch(`${this.serverUrl}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            // Your data to be updated goes here
+            name: this.name.toString(),
+            phoneNumber: this.phoneNumber,
+            lessons: this.cart.map((item) => {
+              return {
+                lesson_id: item._id,
+                spaceTaken: item.availableSpace,
+              };
             }),
-          }
-        );
+          }),
+        });
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const responseData = await response.json();
         if (responseData.insertedId != null) {
-          for (i = 0; i < this.cart.length; i++) {
+          for (var i = 0; i < this.cart.length; i++) {
             console.log(this.cart[i]._id);
             await this.updateData(this.cart[i]._id, this.cart[i].spaces);
           }
@@ -130,19 +128,47 @@ export default {
         console.error("Error updating data:", error.message);
       }
     },
+    async updateData(entryId, spacesLeft) {
+      try {
+        const response = await fetch(
+          `https://vueproject-env.eba-2ewpm3t7.eu-west-2.elasticbeanstalk.com/collections/lessons/${entryId}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              spaces: spacesLeft,
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const responseData = await response.json();
+        return responseData;
+      } catch (error) {
+        console.error("Error updating data:", error.message);
+      }
+    },
     orderLesson() {
       this.initialRender = false;
       this.afterSchoolActivity.reverse();
     },
     async checkout(e) {
       e.preventDefault();
-      const result = await this.pushOrder();
-      if (result.insertedId != null) {
-        alert(
-          `Dear ${this.name} your order has been submitted. You shall be contacted on ${this.phoneNumber}`
-        );
-        location.reload(true);
-      } else {
+      try {
+        const result = await this.pushOrder();
+        if (result.insertedId != null) {
+          alert(
+            `Dear ${this.name} your order has been submitted. You shall be contacted on ${this.phoneNumber}`
+          );
+          location.reload(true);
+        } else {
+        }
+      } catch (e) {
+        console.log(e);
       }
     },
   },
