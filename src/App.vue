@@ -104,15 +104,27 @@ export default {
     // if ("serviceWorker" in navigator) {
     //   navigator.serviceWorker.register("../service-worker.js");
     // }
-    if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/service-worker.js")
-        .then(function(registration) {
-            console.log("Service Worker registered with scope:", registration.scope);
-        })
-        .catch(function(error) {
-            console.error("Service Worker registration failed:", error);
-        });
-}
+    // navigator.serviceWorker
+    //   .register("service-worker.js")
+    //   .then(function (registration) {
+    //     console.log(
+    //       "Service Worker registered with scope:",
+    //       registration.scope
+    //     );
+    //   })
+    //   .catch(function (error) {
+    //     console.error("Service Worker registration failed:", error);
+    //   });
+    //     if ("serviceWorker" in navigator) {
+    //     navigator.serviceWorker.register("service-worker.js")
+    //         .then(function(registration) {
+    //             console.log("Service Worker registered with scope:", registration.scope);
+    //         })
+    //         .catch(function(error) {
+    //             console.error("Service Worker registration failed:", error);
+    //         });
+
+    // }
 
     try {
       fetch(this.serverURL).then(function (response) {

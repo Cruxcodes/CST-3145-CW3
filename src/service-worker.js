@@ -51,6 +51,7 @@
 //     })
 //   );
 // });
+
 self.addEventListener("fetch", function (e) {
   // Skip caching if the request URL has the chrome-extension scheme
   if (e.request.url.startsWith("chrome-extension://")) {

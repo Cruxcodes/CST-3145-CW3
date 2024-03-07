@@ -89,7 +89,7 @@ header {
     grid-template-columns: 1fr 1fr;
   }
 }
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 500px) {
   .activities {
     grid-template-columns: 1fr;
   }
