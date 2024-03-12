@@ -23,9 +23,9 @@ self.addEventListener("install", function (e) {
 // Serve cached files
 self.addEventListener("fetch", (event) => {
   // Skip caching if the request URL has the chrome-extension scheme
-  if (e.request.url.startsWith("chrome-extension://")) {
-    return;
-  }
+  // if (e.request.url.startsWith("chrome-extension://")) {
+  //   return;
+  // }
 
   event.respondWith(
     caches.match(event.request).then((cachedFile) => {
